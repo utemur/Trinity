@@ -48,6 +48,12 @@ async def ical_handler(request: web.Request) -> web.Response:
 
 async def run_ical_server() -> None:
     app = web.Application()
+
+    async def health(_: web.Request) -> web.Response:
+        return web.json_response({"status": "ok"})
+
+    app.router.add_get("/", health)
+    app.router.add_get("/health", health)
     app.router.add_get("/ical/{org_id}/{token}.ics", ical_handler)
 
     runner = web.AppRunner(app)

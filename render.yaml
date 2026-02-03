@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: trinity-bot
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt && alembic upgrade head
+    startCommand: python -m app
+    envVars:
+      - key: BOT_TOKEN
+        sync: false
+      - key: ADMIN_IDS
+        sync: false
+      - key: TIMEZONE
+        value: Asia/Tashkent
+      - key: DATABASE_URL
+        fromDatabase:
+          name: trinity-db
+          property: connectionString
+    healthCheckPath: /health
+
+databases:
+  - name: trinity-db
+    plan: free
+    databaseName: booking_bot
+    user: trinity

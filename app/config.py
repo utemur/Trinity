@@ -8,6 +8,15 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
+def _normalize_db_url(url: str) -> str:
+    """Преобразует postgres:// или postgresql:// в postgresql+asyncpg:// для asyncpg."""
+    if url.startswith("postgres://"):
+        return "postgresql+asyncpg://" + url[len("postgres://"):]
+    if url.startswith("postgresql://") and "+asyncpg" not in url:
+        return url.replace("postgresql://", "postgresql+asyncpg://", 1)
+    return url
+
+
 def _parse_admin_ids(value: str) -> List[int]:
     if not value:
         return []
@@ -16,13 +25,13 @@ def _parse_admin_ids(value: str) -> List[int]:
 
 class Config:
     BOT_TOKEN: str = os.getenv("BOT_TOKEN", "")
-    DATABASE_URL: str = os.getenv(
-        "DATABASE_URL", "postgresql+asyncpg://postgres:postgres@localhost:5432/booking_bot"
+    DATABASE_URL: str = _normalize_db_url(
+        os.getenv("DATABASE_URL", "postgresql+asyncpg://postgres:postgres@localhost:5432/booking_bot")
     )
     ADMIN_IDS: List[int] = _parse_admin_ids(os.getenv("ADMIN_IDS", ""))
     TIMEZONE: str = os.getenv("TIMEZONE", "Asia/Tashkent")
     BASE_URL: str = os.getenv("BASE_URL", "")
-    ICAL_SERVER_PORT: int = int(os.getenv("ICAL_SERVER_PORT", "8080"))
+    ICAL_SERVER_PORT: int = int(os.getenv("PORT", os.getenv("ICAL_SERVER_PORT", "8080")))
 
     @classmethod
     def validate(cls) -> None:
