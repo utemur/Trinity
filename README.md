@@ -17,6 +17,10 @@ python -m app
 docker compose up -d
 ```
 
+## Render
+
+Используйте **Background Worker**, не Web Service. См. [RENDER.md](RENDER.md).
+
 ## Текущий функционал
 
 - `/start` — выбор языка (Русский / English)
