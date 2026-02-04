@@ -2,18 +2,16 @@
 
 ## Важно: используйте Background Worker, не Web Service
 
-Telegram-бот с long polling **не слушает порт** — он сам опрашивает Telegram API. Render Web Service требует открытый порт и завершает деплой по таймауту.
+Telegram-бот с long polling **не слушает порт**. Render Web Service требует открытый порт — используйте Background Worker.
 
 ### Шаги
 
-1. В Render нажмите **New** → **Background Worker** (не Web Service).
-2. Подключите репозиторий `utemur/Trinity`.
-3. Настройки:
-   - **Name**: `trinity-bot`
-   - **Build Command**: `pip install -r requirements.txt`
-   - **Start Command**: `python -m app`
-4. В **Environment** добавьте:
+1. **New** → **Background Worker**
+2. Подключите репозиторий `utemur/Trinity`
+3. **Build Command**: `pip install -r requirements.txt`
+4. **Start Command**: `python -m app`
+5. **Environment**:
    - `BOT_TOKEN` — токен от @BotFather
-5. **Create Background Worker**.
-
-Background Worker не проверяет порты и просто выполняет команду — подходит для long polling бота.
+   - `OPENAI_API_KEY` — ключ OpenAI
+   - `OPENAI_MODEL` — gpt-4o-mini (по умолчанию)
+   - `TZ` — Asia/Tashkent
