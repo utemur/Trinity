@@ -8,7 +8,7 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 
 from app.config import config
-from app.handlers import disclaimer, help as help_handler, lang, privacy, qa, start, urgent
+from app.handlers import about, disclaimer, help as help_handler, lang, privacy, qa, start, urgent
 from app.utils.logging import setup_logging
 
 setup_logging()
@@ -23,6 +23,7 @@ def create_dp() -> Dispatcher:
     dp.include_router(disclaimer.router)
     dp.include_router(privacy.router)
     dp.include_router(urgent.router)
+    dp.include_router(about.router)
     dp.include_router(qa.router)
     return dp
 

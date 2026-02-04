@@ -11,15 +11,15 @@ def main_menu(lang: str = "ru") -> ReplyKeyboardMarkup:
         keyboard=[
             [KeyboardButton(text=t["menu_ask"])],
             [KeyboardButton(text=t["menu_lang"]), KeyboardButton(text=t["menu_disclaimer"])],
-            [KeyboardButton(text=t["menu_urgent"])],
+            [KeyboardButton(text=t["menu_urgent"]), KeyboardButton(text=t["menu_about"])],
         ],
         resize_keyboard=True,
         is_persistent=True,
     )
 
 
-def get_menu_texts() -> tuple[str, str, str, str]:
-    """Возвращает (ask, lang, disclaimer, urgent) для обоих языков — для матчинга в хендлерах."""
+def get_menu_texts() -> tuple:
+    """Возвращает (ask, lang, disclaimer, urgent, about) для обоих языков — для матчинга в хендлерах."""
     ru = TEXTS["ru"]
     uz = TEXTS["uz"]
     return (
@@ -27,4 +27,5 @@ def get_menu_texts() -> tuple[str, str, str, str]:
         (ru["menu_lang"], uz["menu_lang"]),
         (ru["menu_disclaimer"], uz["menu_disclaimer"]),
         (ru["menu_urgent"], uz["menu_urgent"]),
+        (ru["menu_about"], uz["menu_about"]),
     )

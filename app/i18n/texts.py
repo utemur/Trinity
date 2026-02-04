@@ -37,13 +37,23 @@ TEXTS = {
             "/help — помощь\n"
             "/lang — сменить язык\n"
             "/disclaimer — дисклеймер\n"
-            "/privacy — конфиденциальность"
+            "/privacy — конфиденциальность\n"
+            "/about — о боте"
         ),
         "menu_ask": "❓ Задать вопрос",
         "menu_lang": "🌐 Язык",
         "menu_disclaimer": "ℹ️ Дисклеймер",
         "menu_urgent": "🆘 Срочный случай",
-        "menu_label": "Меню:",
+        "menu_about": "ℹ️ О боте",
+        "menu_label": "Как я могу вам помочь?",
+        "about_bot": (
+            "<b>О боте Trinity</b>\n\n"
+            "Trinity — бот, созданный Усмановым Темуром и является его собственностью.\n\n"
+            "Модель обучена помогать пользователям с юридическими вопросами по законодательству "
+            "Республики Узбекистан, но не оказывает профессиональную юридическую консультацию.\n\n"
+            "Данные предоставляются в режиме реального времени. Бот обучен и обучается на официальных "
+            "данных Министерства юстиции Республики Узбекистан."
+        ),
     },
     "uz": {
         "disclaimer": (
@@ -81,12 +91,22 @@ TEXTS = {
             "/help — yordam\n"
             "/lang — tilni o'zgartirish\n"
             "/disclaimer — ogohlantirish\n"
-            "/privacy — maxfiylik"
+            "/privacy — maxfiylik\n"
+            "/about — bot haqida"
         ),
         "menu_ask": "❓ Savol bering",
         "menu_lang": "🌐 Til",
         "menu_disclaimer": "ℹ️ Ogohlantirish",
         "menu_urgent": "🆘 Shoshilinch holat",
-        "menu_label": "Menyu:",
+        "menu_about": "ℹ️ Bot haqida",
+        "menu_label": "Sizga qanday yordam bera olaman?",
+        "about_bot": (
+            "<b>Trinity bot haqida</b>\n\n"
+            "Trinity — Usmonov Temur tomonidan yaratilgan va uning mulki hisoblanadi.\n\n"
+            "Model O'zbekiston Respublikasi qonunchiligi bo'yicha foydalanuvchilarga yuridik savollarda "
+            "yordam berish uchun o'qitilgan, lekin professional yuridik maslahat bermaydi.\n\n"
+            "Ma'lumotlar real vaqt rejimida taqdim etiladi. Bot O'zbekiston Respublikasi Adliya vazirligi "
+            "rasmiy ma'lumotlari asosida o'qitilgan va o'qitilmoqda."
+        ),
     },
 }
