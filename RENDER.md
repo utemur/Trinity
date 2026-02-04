@@ -1,54 +1,59 @@
 # Деплой на Render
 
-## Важно: Background Worker, не Web Service
+## Рекомендуется: Web Service с webhook
 
-Telegram-бот с long polling **не слушает порт**. Render Web Service требует открытый порт и завершит деплой по таймауту. Используйте **Background Worker**.
+Используйте **Web Service** с webhook — это устраняет ошибку `TelegramConflictError` (конфликт нескольких экземпляров getUpdates). Telegram отправляет обновления на ваш URL, конфликтов нет.
 
 ---
 
-## Пошаговая инструкция
+## Вариант A: Web Service (рекомендуется)
 
-### 1. Войти в Render
+### 1. Создать Web Service
 
-Перейдите на [render.com](https://render.com) и войдите (через GitHub удобнее).
+1. **New** → **Web Service**
+2. Подключите репозиторий `utemur/Trinity` (или свой)
+3. Ветка `main`
 
-### 2. Создать Background Worker
-
-1. Нажмите **New** → **Background Worker**
-2. В разделе **Connect a repository** выберите `utemur/Trinity` (или подключите GitHub, если репозиторий ещё не добавлен)
-3. Убедитесь, что выбран правильный репозиторий и ветка `main`
-
-### 3. Настройки сервиса
+### 2. Настройки
 
 | Поле | Значение |
 |------|----------|
-| **Name** | `trinity-bot` (или любое) |
-| **Region** | Frankfurt (или ближайший) |
+| **Name** | `trinity-bot` |
+| **Region** | Frankfurt |
 | **Branch** | `main` |
 | **Build Command** | `pip install -r requirements.txt` |
 | **Start Command** | `python -m app` |
 | **Plan** | Free |
 
-### 4. Переменные окружения
-
-В разделе **Environment** добавьте:
+### 3. Переменные окружения
 
 | Key | Value |
 |-----|-------|
 | `BOT_TOKEN` | Токен от [@BotFather](https://t.me/BotFather) |
-| `OPENAI_API_KEY` | Ключ API с [platform.openai.com](https://platform.openai.com) |
-| `OPENAI_MODEL` | `gpt-4o-mini` (по умолчанию) |
+| `OPENAI_API_KEY` | Ключ с [platform.openai.com](https://platform.openai.com) |
+| `OPENAI_MODEL` | `gpt-4o-mini` |
 | `TZ` | `Asia/Tashkent` |
+| `WEBHOOK_SECRET` | Случайная строка (например, `openssl rand -hex 32`) |
 
-### 5. Деплой
+**Важно:** Render задаёт `RENDER_EXTERNAL_URL` или `RENDER_SERVICE_NAME` — бот сам переключится на webhook. Если webhook не сработал, добавьте вручную `WEBHOOK_URL=https://ваш-сервис.onrender.com` (URL виден в дашборде Render).
 
-1. Нажмите **Create Background Worker**
-2. Дождитесь сборки (2–5 минут)
-3. В логах должно появиться: `Bot starting (long polling)`
+### 4. Деплой
 
-### 6. Проверка
+После деплоя в логах: `Bot starting (webhook) on port 10000`.
+
+### 5. Проверка
 
 Откройте бота в Telegram и отправьте `/start`.
+
+---
+
+## Вариант B: Background Worker (long polling)
+
+Если нужен long polling (без webhook):
+
+1. **New** → **Background Worker**
+2. Те же настройки, но **не задавайте** `WEBHOOK_URL` и `RENDER_EXTERNAL_URL`
+3. Убедитесь, что бот **нигде больше не запущен** (локально, другой хостинг) — иначе будет `TelegramConflictError`
 
 ---
 

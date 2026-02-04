@@ -7,11 +7,35 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
+def _resolve_webhook_url() -> str:
+    url = os.getenv("WEBHOOK_URL", "") or os.getenv("RENDER_EXTERNAL_URL", "")
+    if url:
+        return url
+    host = os.getenv("RENDER_EXTERNAL_HOSTNAME", "")
+    if host:
+        return f"https://{host}"
+    # Fallback: Render Web Service — URL по имени сервиса
+    name = os.getenv("RENDER_SERVICE_NAME", "")
+    if name and os.getenv("RENDER") == "true":
+        return f"https://{name}.onrender.com"
+    return ""
+
+
 class Config:
     BOT_TOKEN: str = os.getenv("BOT_TOKEN", "")
     OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
     OPENAI_MODEL: str = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
     TZ: str = os.getenv("TZ", "Asia/Tashkent")
+
+    # Webhook (для Render Web Service — устраняет TelegramConflictError)
+    WEBHOOK_URL: str = _resolve_webhook_url()
+    WEBHOOK_PATH: str = os.getenv("WEBHOOK_PATH", "/webhook")
+    WEBHOOK_SECRET: str | None = os.getenv("WEBHOOK_SECRET") or None
+    PORT: int = int(os.getenv("PORT", "8080"))
+
+    @classmethod
+    def use_webhook(cls) -> bool:
+        return bool(cls.WEBHOOK_URL)
 
     @classmethod
     def validate(cls) -> None:
@@ -19,6 +43,8 @@ class Config:
             raise ValueError("BOT_TOKEN не задан в .env")
         if not cls.OPENAI_API_KEY:
             raise ValueError("OPENAI_API_KEY не задан в .env")
+        if cls.use_webhook() and not cls.WEBHOOK_URL.startswith("https://"):
+            raise ValueError("WEBHOOK_URL должен начинаться с https://")
 
 
 config = Config()

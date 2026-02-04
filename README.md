@@ -19,7 +19,7 @@ docker compose up -d
 
 ## Render
 
-Используйте **Background Worker**. См. [RENDER.md](RENDER.md).
+Рекомендуется **Web Service** с webhook (устраняет TelegramConflictError). Альтернатива: Background Worker. См. [RENDER.md](RENDER.md).
 
 ## Переменные окружения
 
@@ -29,6 +29,7 @@ docker compose up -d
 | OPENAI_API_KEY | Ключ OpenAI |
 | OPENAI_MODEL | Модель (по умолчанию gpt-4o-mini) |
 | TZ | Часовой пояс (Asia/Tashkent) |
+| WEBHOOK_SECRET | Секрет для webhook (при деплое как Web Service) |
 
 ## Команды
 
