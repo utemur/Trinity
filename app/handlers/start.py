@@ -49,4 +49,5 @@ async def on_lang_selected(cq: CallbackQuery, callback_data: LangCb, state: FSMC
         msg = "Язык изменён на Русский ✓" if lang == "ru" else "Til o'zbekchaga o'zgartirildi ✓"
 
     await cq.message.edit_text(msg)
-    await cq.message.answer("Меню:", reply_markup=main_menu())
+    menu_label = TEXTS[lang]["menu_label"]
+    await cq.message.answer(menu_label, reply_markup=main_menu(lang))

@@ -9,7 +9,7 @@ from aiogram.types import Message
 
 from app.handlers.start import get_lang, set_lang
 from app.i18n.texts import TEXTS
-from app.keyboards.reply import ASK, main_menu
+from app.keyboards.reply import get_menu_texts, main_menu
 from app.services.openai_service import ask_openai
 from app.services.rate_limit import acquire_slot, check_user_limit
 from app.services.safety import contains_pii, is_high_risk
@@ -23,7 +23,7 @@ class QAStates(StatesGroup):
     waiting_question = State()
 
 
-@router.message(lambda m: m.text == ASK)
+@router.message(lambda m: m.text and m.text in get_menu_texts()[0])
 async def ask_question_start(message: Message, state: FSMContext) -> None:
     user_id = message.from_user.id if message.from_user else 0
     lang = get_lang(user_id)
@@ -82,4 +82,4 @@ async def process_question(message: Message, state: FSMContext) -> None:
     if len(full_answer) > 4000:
         full_answer = full_answer[:3997] + "..."
 
-    await message.answer(full_answer, reply_markup=main_menu())
+    await message.answer(full_answer, reply_markup=main_menu(lang))

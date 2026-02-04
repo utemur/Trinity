@@ -39,6 +39,11 @@ TEXTS = {
             "/disclaimer — дисклеймер\n"
             "/privacy — конфиденциальность"
         ),
+        "menu_ask": "❓ Задать вопрос",
+        "menu_lang": "🌐 Язык",
+        "menu_disclaimer": "ℹ️ Дисклеймер",
+        "menu_urgent": "🆘 Срочный случай",
+        "menu_label": "Меню:",
     },
     "uz": {
         "disclaimer": (
@@ -78,5 +83,10 @@ TEXTS = {
             "/disclaimer — ogohlantirish\n"
             "/privacy — maxfiylik"
         ),
+        "menu_ask": "❓ Savol bering",
+        "menu_lang": "🌐 Til",
+        "menu_disclaimer": "ℹ️ Ogohlantirish",
+        "menu_urgent": "🆘 Shoshilinch holat",
+        "menu_label": "Menyu:",
     },
 }
