@@ -1,0 +1,19 @@
+{
+  "name": "trinity",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Доска объявлений Узбекистан — EmployerBot + WorkerBot",
+  "scripts": {
+    "db:generate": "pnpm --filter @trinity/db generate",
+    "db:migrate": "pnpm --filter @trinity/db migrate",
+    "db:push": "pnpm --filter @trinity/db push",
+    "db:studio": "pnpm --filter @trinity/db studio",
+    "employer:dev": "pnpm --filter employer-bot dev",
+    "employer:build": "pnpm --filter @trinity/db build && pnpm --filter employer-bot build",
+    "employer:start": "pnpm --filter employer-bot start"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "pnpm@9.0.0"
+}
