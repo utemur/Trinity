@@ -2,6 +2,7 @@
 
 import asyncio
 import logging
+import os
 
 from aiohttp import web
 from aiogram import Bot, Dispatcher
@@ -37,7 +38,13 @@ async def health(_: web.Request) -> web.Response:
 
 async def on_webhook_startup(bot: Bot) -> None:
     url = f"{config.WEBHOOK_URL.rstrip('/')}{config.WEBHOOK_PATH}"
-    await bot.set_webhook(url, secret_token=config.WEBHOOK_SECRET)
+    secret = config.WEBHOOK_SECRET
+    if os.getenv("WEBHOOK_SECRET") and not secret:
+        logger.warning(
+            "WEBHOOK_SECRET задан, но содержит недопустимые символы "
+            "(Telegram: только A-Z, a-z, 0-9, _, -). Webhook без секрета."
+        )
+    await bot.set_webhook(url, secret_token=secret)
     logger.info("Webhook set: %s", url)
 
 

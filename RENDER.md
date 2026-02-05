@@ -33,7 +33,7 @@
 | `OPENAI_API_KEY` | Ключ с [platform.openai.com](https://platform.openai.com) |
 | `OPENAI_MODEL` | `gpt-4o-mini` |
 | `TZ` | `Asia/Tashkent` |
-| `WEBHOOK_SECRET` | Случайная строка (например, `openssl rand -hex 32`) |
+| `WEBHOOK_SECRET` | Строка из букв, цифр, `_` и `-` (например, `mySecretToken123` или `openssl rand -hex 32`) |
 
 **Важно:** Render задаёт `RENDER_EXTERNAL_URL` или `RENDER_SERVICE_NAME` — бот сам переключится на webhook. Если webhook не сработал, добавьте вручную `WEBHOOK_URL=https://ваш-сервис.onrender.com` (URL виден в дашборде Render).
 

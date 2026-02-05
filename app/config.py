@@ -1,10 +1,19 @@
 """Конфигурация из переменных окружения."""
 
 import os
+import re
 
 from dotenv import load_dotenv
 
 load_dotenv()
+
+# Telegram: secret_token только A-Z, a-z, 0-9, _, -
+_WEBHOOK_SECRET_ALLOWED = re.compile(r"^[A-Za-z0-9_-]{1,256}$")
+
+
+def _get_webhook_secret() -> str | None:
+    s = (os.getenv("WEBHOOK_SECRET") or "").strip()
+    return s if s and _WEBHOOK_SECRET_ALLOWED.match(s) else None
 
 
 def _resolve_webhook_url() -> str:
@@ -30,7 +39,7 @@ class Config:
     # Webhook (для Render Web Service — устраняет TelegramConflictError)
     WEBHOOK_URL: str = _resolve_webhook_url()
     WEBHOOK_PATH: str = os.getenv("WEBHOOK_PATH", "/webhook")
-    WEBHOOK_SECRET: str | None = os.getenv("WEBHOOK_SECRET") or None
+    WEBHOOK_SECRET: str | None = _get_webhook_secret()
     PORT: int = int(os.getenv("PORT", "8080"))
 
     @classmethod

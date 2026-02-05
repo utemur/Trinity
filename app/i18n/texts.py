@@ -102,7 +102,7 @@ TEXTS = {
         "menu_label": "Sizga qanday yordam bera olaman?",
         "about_bot": (
             "<b>Trinity bot haqida</b>\n\n"
-            "Trinity — Usmonov Temur tomonidan yaratilgan va uning mulki hisoblanadi.\n\n"
+            "Trinity — Usmanov Temur tomonidan yaratilgan va uning mulki hisoblanadi.\n\n"
             "Model O'zbekiston Respublikasi qonunchiligi bo'yicha foydalanuvchilarga yuridik savollarda "
             "yordam berish uchun o'qitilgan, lekin professional yuridik maslahat bermaydi.\n\n"
             "Ma'lumotlar real vaqt rejimida taqdim etiladi. Bot O'zbekiston Respublikasi Adliya vazirligi "
