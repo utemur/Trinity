@@ -47,6 +47,10 @@ pnpm db:migrate
 pnpm employer:dev
 ```
 
+## Деплой на Render
+
+Используйте **Background Worker** (не Web Service). Подробно: [RENDER.md](RENDER.md).
+
 ## Деплой на VPS (pm2)
 
 ```bash
