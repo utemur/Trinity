@@ -130,12 +130,16 @@ createJobScene.action(CALLBACK.wizardPublish, async (ctx) => {
   const s = (ctx as any).scene.session as CreateJobSession;
   await ctx.answerCbQuery();
   if (!s.profession || !s.date || !s.time || !s.location || s.ratePerHour == null) {
+    logger.warn({ session: s }, "wizardPublish: incomplete session data");
     return ctx.reply(TEXTS.errors.generic);
   }
   const employer = await prisma.employer.findUnique({
     where: { telegramId: BigInt(ctx.from!.id) },
   });
-  if (!employer) return ctx.reply(TEXTS.errors.generic);
+  if (!employer) {
+    logger.warn({ telegramId: ctx.from?.id }, "wizardPublish: employer not found");
+    return ctx.reply(TEXTS.errors.generic);
+  }
   try {
     const job = await prisma.job.create({
       data: {
@@ -160,7 +164,9 @@ createJobScene.action(CALLBACK.wizardPublish, async (ctx) => {
     }
     await ctx.reply(TEXTS.wizard.published.replace("{jobId}", job.id));
   } catch (e) {
-    logger.error({ err: e }, "Failed to create job");
+    const errMsg = e instanceof Error ? e.message : String(e);
+    const errStack = e instanceof Error ? e.stack : undefined;
+    logger.error({ err: e, errMsg, errStack, session: s }, "Failed to create job");
     await ctx.reply(TEXTS.errors.generic);
   }
   await (ctx as any).scene.leave();

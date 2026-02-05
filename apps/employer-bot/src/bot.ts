@@ -67,7 +67,10 @@ async function showMyJobs(ctx: any, page: number = 1) {
   const employer = await prisma.employer.findUnique({
     where: { telegramId: tid },
   });
-  if (!employer) return ctx.reply(TEXTS.errors.generic);
+  if (!employer) {
+    logger.warn({ telegramId: ctx.from?.id }, "showMyJobs: employer not found");
+    return ctx.reply(TEXTS.errors.generic);
+  }
   const PER_PAGE = 5;
   const all = await prisma.job.findMany({
     where: { employerId: employer.id, status: { not: "DELETED" } },
@@ -190,6 +193,11 @@ bot.hears("❓ Помощь", (ctx) => ctx.reply(TEXTS.help.text));
 bot.hears("⚙️ Настройки", (ctx) => ctx.reply("Настройки в разработке."));
 
 bot.catch((err, ctx) => {
-  logger.error({ err, update: ctx.update }, "Bot error");
+  const errMsg = err instanceof Error ? err.message : String(err);
+  const errStack = err instanceof Error ? err.stack : undefined;
+  logger.error(
+    { err, errMsg, errStack, update: ctx.update, updateType: ctx.updateType },
+    "Bot error (generic handler)"
+  );
   ctx.reply(TEXTS.errors.generic).catch(() => {});
 });
