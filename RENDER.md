@@ -22,6 +22,12 @@ EmployerBot использует **long polling** (Telegraf) — не слуша
 
 ### 3. Настройки сервиса
 
+**Вариант A: Docker** (если выбран Docker)
+
+Оставьте **Build Command** и **Start Command** пустыми — Render использует `Dockerfile` из репозитория.
+
+**Вариант B: Native Environment**
+
 | Поле | Значение |
 |------|----------|
 | **Name** | `employer-bot` |
