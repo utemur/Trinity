@@ -12,7 +12,7 @@ import {
 } from "./keyboards.js";
 import { TEXTS } from "./texts.js";
 import { formatJobCard } from "./formatters.js";
-export const bot = new Telegraf(config.botToken);
+export const bot = new Telegraf(config.botTokenEmployer);
 
 const stage = new Scenes.Stage([createJobScene] as any);
 

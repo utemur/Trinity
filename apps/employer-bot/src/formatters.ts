@@ -19,3 +19,7 @@ export function formatJobCard(job: JobLike): string {
     .replace("{rate}", job.ratePerHour.toLocaleString())
     .replace("{currency}", job.currency ?? "UZS");
 }
+
+export function formatJobCardForWorker(job: JobLike): string {
+  return `📋 Новая вакансия\n${formatJobCard(job)}\n\nНажмите «Откликнуться», чтобы связаться с работодателем.`;
+}

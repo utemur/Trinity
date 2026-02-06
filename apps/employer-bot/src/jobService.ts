@@ -1,5 +1,6 @@
 import { prisma } from "@trinity/db";
 import { logger } from "./logger.js";
+import { runBroadcastForJob } from "./broadcastService.js";
 
 export async function publishJob(jobId: string): Promise<void> {
   const job = await prisma.job.findUnique({
@@ -8,5 +9,7 @@ export async function publishJob(jobId: string): Promise<void> {
   });
   if (!job) return;
   logger.info({ jobId, employerId: job.employerId }, "Job published");
-  // TODO: триггер рассылки WorkerBot — здесь можно вызвать очередь/хук
+  runBroadcastForJob(jobId).catch((err) => {
+    logger.error({ err, jobId }, "Broadcast failed");
+  });
 }

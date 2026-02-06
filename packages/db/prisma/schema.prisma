@@ -9,38 +9,113 @@ datasource db {
 }
 
 model Employer {
-  id          String   @id @default(cuid())
-  telegramId  BigInt   @unique
+  id          String    @id @default(cuid())
+  telegramId  BigInt    @unique
   username    String?
   firstName   String
   lastName    String?
-  isConsented Boolean  @default(false)
+  isConsented Boolean   @default(false)
   consentedAt DateTime?
-  createdAt   DateTime @default(now())
+  createdAt   DateTime  @default(now())
 
   jobs Job[]
 }
 
+model Worker {
+  id          String    @id @default(cuid())
+  telegramId  BigInt    @unique
+  username    String?
+  firstName   String
+  lastName    String?
+  isConsented Boolean   @default(false)
+  consentedAt DateTime?
+  isActive    Boolean   @default(true)
+  city        String?
+  area        String?
+  minRate     Int?
+  professions String[]  @default([])
+  createdAt   DateTime  @default(now())
+
+  applications   Application[]
+  broadcastLogs  BroadcastLog[]
+}
+
 model Job {
-  id           String   @id @default(cuid())
-  employerId   String
-  employer     Employer @relation(fields: [employerId], references: [id], onDelete: Cascade)
-  profession   String
-  date         String
-  time         String
-  location     String
-  ratePerHour  Int
-  currency     String   @default("UZS")
-  status       JobStatus @default(OPEN)
-  createdAt    DateTime @default(now())
+  id              String          @id @default(cuid())
+  employerId      String
+  employer        Employer        @relation(fields: [employerId], references: [id], onDelete: Cascade)
+  profession      String
+  date            String
+  time            String
+  location        String
+  ratePerHour     Int
+  currency        String          @default("UZS")
+  status          JobStatus       @default(OPEN)
+  broadcastStatus BroadcastStatus @default(NOT_SENT)
+  createdAt       DateTime        @default(now())
+
+  applications   Application[]
+  broadcastLogs  BroadcastLog[]
 
   @@index([employerId])
   @@index([status])
   @@index([date])
+  @@index([broadcastStatus])
+}
+
+model Application {
+  id        String          @id @default(cuid())
+  jobId     String
+  workerId  String
+  status    ApplicationStatus @default(APPLIED)
+  createdAt DateTime        @default(now())
+
+  job    Job    @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  worker Worker @relation(fields: [workerId], references: [id], onDelete: Cascade)
+
+  @@unique([jobId, workerId])
+  @@index([jobId])
+  @@index([workerId])
+}
+
+model BroadcastLog {
+  id        String            @id @default(cuid())
+  jobId     String
+  workerId  String
+  status    BroadcastLogStatus @default(PENDING)
+  sentAt    DateTime?
+  errorText String?
+
+  job    Job    @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  worker Worker @relation(fields: [workerId], references: [id], onDelete: Cascade)
+
+  @@unique([jobId, workerId])
+  @@index([jobId])
+  @@index([workerId])
+  @@index([status])
 }
 
 enum JobStatus {
   OPEN
   CLOSED
   DELETED
+}
+
+enum BroadcastStatus {
+  NOT_SENT
+  SENDING
+  SENT
+  FAILED
+}
+
+enum ApplicationStatus {
+  APPLIED
+  CANCELLED
+}
+
+enum BroadcastLogStatus {
+  PENDING
+  SENT
+  SKIPPED
+  FAILED
 }

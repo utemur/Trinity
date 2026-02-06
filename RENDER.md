@@ -45,7 +45,8 @@ EmployerBot использует **long polling** (Telegraf) — не слуша
 
 | Key | Value |
 |-----|-------|
-| `BOT_TOKEN_EMPLOYER` | Токен от [@BotFather](https://t.me/BotFather) |
+| `BOT_TOKEN_EMPLOYER` | Токен EmployerBot от [@BotFather](https://t.me/BotFather) |
+| `BOT_TOKEN_WORKER` | Токен WorkerBot от [@BotFather](https://t.me/BotFather) |
 | `DATABASE_URL` | URL PostgreSQL (из шага 1) |
 | `ADMIN_TELEGRAM_ID` | (опционально) Ваш Telegram ID для копий заявок |
 
