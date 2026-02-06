@@ -17,6 +17,7 @@ async function main() {
 
   setWorkerBot(workerBot);
 
+  logger.info("Launching EmployerBot...");
   try {
     await bot.launch();
     logger.info("EmployerBot started");
@@ -24,6 +25,7 @@ async function main() {
     logger.fatal({ err }, "EmployerBot launch failed");
     throw err;
   }
+  logger.info("Launching WorkerBot...");
   try {
     await workerBot.launch();
     logger.info("WorkerBot started");
