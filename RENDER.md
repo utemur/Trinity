@@ -77,7 +77,18 @@ pnpm install && pnpm db:generate && pnpm db:migrate && pnpm employer:build
 
 ### 7. Проверка
 
-Откройте бота в Telegram и отправьте `/start`.
+- **EmployerBot:** откройте бота работодателя в Telegram, отправьте `/start`
+- **WorkerBot:** откройте **другого** бота (WorkerBot) в Telegram, отправьте `/start` или `/ping`
+
+**Важно:** EmployerBot и WorkerBot — это **два разных бота** с разными токенами. Создайте второго бота через @BotFather и укажите его токен в `BOT_TOKEN_WORKER`.
+
+---
+
+## WorkerBot не отвечает
+
+1. **Проверьте логи:** должны быть строки `EmployerBot started` и `WorkerBot started`. Если `WorkerBot launch failed` — неверный `BOT_TOKEN_WORKER`.
+2. **Два разных бота:** `BOT_TOKEN_EMPLOYER` и `BOT_TOKEN_WORKER` должны быть от разных ботов. Один токен = один бот.
+3. **Проверка:** отправьте `/ping` в WorkerBot — должен ответить `pong`.
 
 ---
 

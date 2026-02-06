@@ -124,10 +124,11 @@ interface WorkerProfileSession {
 const stage = new Scenes.Stage([profileScene] as any);
 
 export const workerBot = new Telegraf(config.botTokenWorker);
-workerBot.use(session());
+workerBot.use(session({ getSessionKey: (ctx) => `worker:${ctx.from?.id}:${ctx.chat?.id}` }));
 workerBot.use(stage.middleware() as any);
 
 workerBot.start(async (ctx) => {
+  logger.info({ userId: ctx.from?.id }, "WorkerBot /start received");
   const tid = BigInt(ctx.from!.id);
   let worker = await prisma.worker.findUnique({ where: { telegramId: tid } });
   if (!worker) {
@@ -141,12 +142,14 @@ workerBot.start(async (ctx) => {
     });
   }
   if (!worker.isConsented) {
+    logger.info({ userId: ctx.from?.id }, "WorkerBot: showing consent");
     await ctx.reply(
       WORKER_TEXTS.start.greeting + "\n\n" + WORKER_TEXTS.start.consent,
       Markup.inlineKeyboard([Markup.button.callback("✅ Согласен", CALLBACK_CONSENT)])
     );
     return;
   }
+  logger.info({ userId: ctx.from?.id }, "WorkerBot: showing main menu");
   await ctx.reply(WORKER_TEXTS.start.greeting + "\n\n" + WORKER_TEXTS.start.mainMenu, workerMainMenu());
 });
 
@@ -210,6 +213,11 @@ workerBot.hears("▶️ Продолжить", async (ctx) => {
 });
 
 workerBot.hears(WORKER_TEXTS.menu.help, (ctx) => ctx.reply(WORKER_TEXTS.help.text));
+
+workerBot.command("ping", (ctx) => {
+  logger.info({ userId: ctx.from?.id }, "WorkerBot /ping");
+  return ctx.reply("pong");
+});
 
 workerBot.action(new RegExp(`^${CALLBACK_APPLY}(.+)$`), async (ctx) => {
   const jobId = ctx.match[1]!;

@@ -16,7 +16,7 @@ export const bot = new Telegraf(config.botTokenEmployer);
 
 const stage = new Scenes.Stage([createJobScene] as any);
 
-bot.use(session());
+bot.use(session({ getSessionKey: (ctx) => `employer:${ctx.from?.id}:${ctx.chat?.id}` }));
 bot.use(stage.middleware() as any);
 
 bot.start(async (ctx) => {
