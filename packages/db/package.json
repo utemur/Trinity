@@ -11,6 +11,7 @@
     "migrate": "prisma migrate dev",
     "migrate:deploy": "prisma migrate deploy",
     "push": "prisma db push",
+    "push:deploy": "prisma db push --accept-data-loss",
     "studio": "prisma studio"
   },
   "dependencies": {

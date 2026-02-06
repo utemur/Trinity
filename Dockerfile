@@ -16,4 +16,4 @@ RUN pnpm install --frozen-lockfile
 RUN pnpm db:generate
 RUN pnpm employer:build
 
-CMD ["sh", "-c", "pnpm --filter @trinity/db push && node apps/employer-bot/dist/index.js"]
+CMD ["sh", "-c", "pnpm --filter @trinity/db push:deploy && node apps/employer-bot/dist/index.js"]
